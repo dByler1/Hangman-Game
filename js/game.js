@@ -13,47 +13,49 @@
 
 // Step 2, Step 3, Step 4, Step 5
 var words = ["car", "bicycle", "airplane", "train"];
-//var keyStrokeCounter = 0;
-console.log("javascript")
+var userGuesses = [];
 
-// Start Button Function
-function myFunction() {
-    //console.log("button works!")
-   
+
+
+//starts the game when the user clicks the start button
+var startButton = document.getElementById("start");
+startButton.addEventListener("click", gameFunction());
+
+// Game Function
+function gameFunction() {
+   //computer picks a word from the array of choices
     var computerPick = words[Math.floor(Math.random() * words.length)]
-    console.log(computerPick); //prints step 1
     
+    //checks how long the word is 
     var wordLength = computerPick.length;
-    console.log(wordLength); //prints step 2
     
+    //creates a div for each of the letters in the word
     for (var i = 0; i < wordLength; i++) {
-                console.log("running");
-
                 var placeHolder = document.createElement("div");
                 document.getElementById("word-divs").appendChild(placeHolder);
             }
-
+    //create the number of guesses and print that number to the screen.
     var numberGuesses = wordLength*2;
-
-    document.getElementById("guesses").innerHTML = "Guesses: " + numberGuesses;
-
-//Key Stroke Counter Function
-
-    var keyupCounter = document.onkeyup = function () {
     
+
+    //Key Stroke Counter Function. Count how many guesses the user made
+    var keyupCounter = document.onkeyup = function () {
         var keyStrokesCounter = 0;
         keyStrokesCounter++;
+        
+       // document.getElementByID("guesses").appendChild(keyStrokesCounter);
 
+        //once the user makes all the guesses, end the game. 
         if (keyStrokesCounter < numberGuesses) {
             numberGuesses--
+            document.getElementById("guesses").innerHTML = "Guesses: " + numberGuesses;
         } else {
-            alert("Game Over");
+            document.getElementById("guesses").innerHTML = "Game Over - Click the button to play again";
             };
     }
 }
 
-var startButton = document.getElementById("#start");
-console.log(startButton);
+
 
 
 
