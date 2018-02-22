@@ -1,0 +1,12 @@
+
+#user-guess {
+    width: 200px;
+}
+
+.placeholder-style {
+    width: 10px;
+    height: 10px;
+    border-bottom: 5px solid black;
+    display: inline-block;
+    margin: 0 2px;
+}

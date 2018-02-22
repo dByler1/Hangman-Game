@@ -1,62 +1,87 @@
-// 1. Game page loads with instructions for user to press any key to start (all html and css)
-// 2. When user presses any key computer selects random word from a list of possible words
-// 3. Computer determines the length of the selected word
-// 4. Function applies a number of divs, equal to the length of the word, to the html, to represent place holders for the letters
-// 5. User receives a notification that they have x number of guesses. X should be equal to length of the selected word times 2.
-// 7.  each time the user makes a guess, a counter is updated added to the html to show how many guesses remain.
-// 8. within the same function, each user guess will also display to the screen.
-// 9. Computer evaluates if user guess equals any character in string
-// 10. If the user guess equals any letter in the string, that particular placeholder div should be replaced with the letter.
-// 11. If all of the letters in the string are selected before the number of guesses equals zero, a notification that the user won will display.
-// 12. If user guesses equals zero before the user selects all of the letters in the string, a notification that the user lost will display and ask the user to play again.
 
 
-// Step 2, Step 3, Step 4, Step 5
-var words = ["car", "bicycle", "airplane", "train"];
-var userGuesses = [];
-
-
-
-//starts the game when the user clicks the start button
-var startButton = document.getElementById("start");
-startButton.addEventListener("click", gameFunction());
-
-// Game Function
-function gameFunction() {
-   //computer picks a word from the array of choices
-    var computerPick = words[Math.floor(Math.random() * words.length)]
+//this is the core of the game. when the start button is clicked, select a random word. Other game functions are called here
+document.getElementById("start").addEventListener('click', function(){
     
-    //checks how long the word is 
-    var wordLength = computerPick.length;
+    document.getElementById("start").addEventListener('click', function() {
+        document.getElementById("guesses").innerHTML = "don't do that";
+    });
+    var words = ["Bud", "Miller", "Corona", "Guiness"];
+    var selectedWord = words[Math.floor(Math.random() * words.length)];
+    var selectedWordLength = selectedWord.length;
     
-    //creates a div for each of the letters in the word
-    for (var i = 0; i < wordLength; i++) {
-                var placeHolder = document.createElement("div");
-                document.getElementById("word-divs").appendChild(placeHolder);
-            }
-    //create the number of guesses and print that number to the screen.
-    var numberGuesses = wordLength*2;
+    //turns the selected word into an array - unceccesary 
+    //x = Array.from(selectedWord)
     
+    //calling functions below, passing data from this function as an argument
+    placeholders( selectedWordLength );
+    counter( selectedWordLength, selectedWord );
+    console.log(selectedWord + selectedWordLength) 
+});
 
-    //Key Stroke Counter Function. Count how many guesses the user made
-    var keyupCounter = document.onkeyup = function () {
-        var keyStrokesCounter = 0;
-        keyStrokesCounter++;
-        
-       // document.getElementByID("guesses").appendChild(keyStrokesCounter);
 
-        //once the user makes all the guesses, end the game. 
-        if (keyStrokesCounter < numberGuesses) {
-            numberGuesses--
-            document.getElementById("guesses").innerHTML = "Guesses: " + numberGuesses;
-        } else {
-            document.getElementById("guesses").innerHTML = "Game Over - Click the button to play again";
-            };
+
+function placeholders( selectedWordLength ) {
+    //this would print the selected word as a whole word - uncessecary 
+    //document.getElementById("current-word").innerHTML = globalObject.selectedWord;
+    
+    //this loops through the selected word and creates a div for each letter with a css class
+    for (var i = 0; i < selectedWordLength; i++) {
+        var createDiv = document.createElement("div");
+        var existingDiv = document.getElementById("current-word");
+        createDiv.className = "placeholder-style";
+        existingDiv.appendChild(createDiv);
     }
+};
+
+//this function does a lot
+function counter( selectedWordLength, selectedWord ) {
+    
+    var numberOfGuesses = selectedWordLength * 2;
+    
+    //stores each of the user guesses in an array
+    var userGuessed = [];
+    console.log(userGuessed);
+    var keyStrokesCounter = 0;
+    
+    //turns the selected word into an array so each letter can be compared to user guesses
+    var wordArray = Array.from(selectedWord);
+    document.getElementById("guesses").innerHTML = "Guesses Left: " + numberOfGuesses;
+    
+    //this function runs on keypress so we do all things keypress in here
+    document.onkeypress = function(evt) {
+        evt = evt || window.event;
+    
+        // Ensure we only handle printable keys
+        var charCode = typeof evt.which == "number" ? evt.which : evt.keyCode;
+        
+        //push each of the users guesses as a string into an array
+        if (charCode) {
+            userGuessed.push(String.fromCharCode(charCode));
+        }
+        
+        //print each of the users guesses to the screen
+        document.getElementById("user-guess").innerHTML = "Letters Guessed: " + userGuessed;
+        
+        //if the number of guesses is less than the guesses allowed, decrement and print the number of guesses left
+        if (keyStrokesCounter < numberOfGuesses) {
+            numberOfGuesses--
+            document.getElementById("guesses").innerHTML = "Guesses Left: " + numberOfGuesses;
+
+        } 
+        if (userGuessed.value.match(wordArray)) {
+            
+            console.log(true);
+
+        } else {
+            //once the user makes all the guesses, end the game by clearning all the values
+            document.getElementById("guesses").innerHTML = "Game Over - Click the start button to play again";
+            document.getElementById("user-guess").innerHTML = "";
+            document.getElementById("current-word").innerHTML = "";
+        };
+        
+    };     
 }
-
-
-
 
 
 
