@@ -2,11 +2,8 @@
 
 //this is the core of the game. when the start button is clicked, select a random word. Other game functions are called here
 document.getElementById("start").addEventListener('click', function(){
-    
-    document.getElementById("start").addEventListener('click', function() {
-        document.getElementById("guesses").innerHTML = "don't do that";
-    });
-    var words = ["Bud", "Miller", "Corona", "Guiness"];
+    document.getElementById("current-word").innerHTML = "";
+    var words = ["bud", "miller", "corona", "guiness"];
     var selectedWord = words[Math.floor(Math.random() * words.length)];
     var selectedWordLength = selectedWord.length;
     
@@ -46,14 +43,29 @@ function counter( selectedWordLength, selectedWord ) {
     
     //turns the selected word into an array so each letter can be compared to user guesses
     var wordArray = Array.from(selectedWord);
+    console.log(wordArray); 
     document.getElementById("guesses").innerHTML = "Guesses Left: " + numberOfGuesses;
     
     //this function runs on keypress so we do all things keypress in here
     document.onkeypress = function(evt) {
+        
+        // console.log(evt);
         evt = evt || window.event;
+        // console.log(evt);   
     
         // Ensure we only handle printable keys
+        // TODO: Simplify this
         var charCode = typeof evt.which == "number" ? evt.which : evt.keyCode;
+        console.log("char Code is: " + charCode);
+
+        // ERIC CODE
+        // does the word include the letter the player pressed?
+        var myLetter = evt.key;
+        // TODO: turn myLetter
+        console.log("my letter " + myLetter);
+        console.log("Is it there? " + selectedWord.indexOf(myLetter));
+        myLetter = myLetter.charAt();
+        console.log("my letter should now be a char " + myLetter);
         
         //push each of the users guesses as a string into an array
         if (charCode) {
@@ -68,20 +80,15 @@ function counter( selectedWordLength, selectedWord ) {
             numberOfGuesses--
             document.getElementById("guesses").innerHTML = "Guesses Left: " + numberOfGuesses;
 
-        } 
-        if (userGuessed.value.match(wordArray)) {
-            
-            console.log(true);
-
         } else {
             //once the user makes all the guesses, end the game by clearning all the values
             document.getElementById("guesses").innerHTML = "Game Over - Click the start button to play again";
             document.getElementById("user-guess").innerHTML = "";
             document.getElementById("current-word").innerHTML = "";
         };
+
         
     };     
 }
-
 
 
