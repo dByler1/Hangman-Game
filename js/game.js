@@ -1,6 +1,11 @@
 
 
-//this is the core of the game. when the start button is clicked, select a random word. Other game functions are called here
+
+
+var matchedStorage = {
+}
+
+//this is the core of the game. when the start button is clicked, select a random word. Other game functions are called here 
 document.getElementById("start").addEventListener('click', function(){
     document.getElementById("current-word").innerHTML = "";
     var words = ["bud", "miller", "corona", "guiness"];
@@ -26,7 +31,7 @@ function placeholders( selectedWordLength ) {
     for (var i = 0; i < selectedWordLength; i++) {
         var createDiv = document.createElement("div");
         var existingDiv = document.getElementById("current-word");
-        createDiv.className = "placeholder-style";
+        createDiv.className = "placeholder-style letter";
         existingDiv.appendChild(createDiv);
     }
 };
@@ -38,39 +43,24 @@ function counter( selectedWordLength, selectedWord ) {
     
     //stores each of the user guesses in an array
     var userGuessed = [];
-    console.log(userGuessed);
     var keyStrokesCounter = 0;
     
     //turns the selected word into an array so each letter can be compared to user guesses
-    var wordArray = Array.from(selectedWord);
-    console.log(wordArray); 
+    var wordArray = Array.from(selectedWord); 
     document.getElementById("guesses").innerHTML = "Guesses Left: " + numberOfGuesses;
     
     //this function runs on keypress so we do all things keypress in here
     document.onkeypress = function(evt) {
-        
-        // console.log(evt);
-        evt = evt || window.event;
-        // console.log(evt);   
-    
-        // Ensure we only handle printable keys
-        // TODO: Simplify this
-        var charCode = typeof evt.which == "number" ? evt.which : evt.keyCode;
-        console.log("char Code is: " + charCode);
-
-        // ERIC CODE
-        // does the word include the letter the player pressed?
         var myLetter = evt.key;
-        // TODO: turn myLetter
-        console.log("my letter " + myLetter);
-        console.log("Is it there? " + selectedWord.indexOf(myLetter));
-        myLetter = myLetter.charAt();
-        console.log("my letter should now be a char " + myLetter);
-        
-        //push each of the users guesses as a string into an array
-        if (charCode) {
-            userGuessed.push(String.fromCharCode(charCode));
-        }
+        userGuessed.push(myLetter);
+
+
+        wordArray.forEach(function(element, i) {
+          if (element == myLetter) {
+              matchedStorage[i] = element;
+              addLetter();
+          }
+        });  
         
         //print each of the users guesses to the screen
         document.getElementById("user-guess").innerHTML = "Letters Guessed: " + userGuessed;
@@ -90,5 +80,19 @@ function counter( selectedWordLength, selectedWord ) {
         
     };     
 }
+
+function addLetter() {
+    
+
+    for(var i in matchedStorage) {
+        document.getElementsByClassName("letter")[i].innerHTML = matchedStorage[i];
+        //remove the class here
+        document.querySelector("#current-word .letter").classList.remove("placeholder-style");
+    } 
+    
+}
+
+
+
 
 
