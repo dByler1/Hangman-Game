@@ -1,13 +1,33 @@
 
+body {
+    background-image: url("../images/background-board-brown-326311.jpg");
+    background-color: #8B8890;
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+h1, h4, p, div {
+    color: white;
+}
+
+div {
+    font-size: 16px;
+    padding: 5px;
+}
+
+
 #user-guess {
-    width: 200px;
+    width: 500px;
 }
 
 .placeholder-style {
-    width: 10px;
-    height: 10px;
-    border-bottom: 5px solid black;
-    display: inline-block;
-    margin: 0 2px;
+    width: 15px;
+    
+    border-bottom: 2px solid white;
+    margin: 0 3px;
 }
 
+.letter {
+    display: inline-block;
+}
